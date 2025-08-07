@@ -1,21 +1,26 @@
 import org.w3c.dom.ls.LSOutput;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Main {
     public static void main(String[] args){
+        String url = "jdbc:mysql://localhost:3306/projetopoo";
+        String user = "root";
+        String password = "univille";
+
+
         try{
-            Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/projetopoo", "root", "univille");
-            Statement s = c.createStatement();
-            String Sql = "insert into PESSOAS(nome, cpf) " +
-                    "values('Tom', '09021984911')";
-            s.execute(Sql);
+            Connection con = DriverManager.getConnection(url,user,password);
+            String insert = "insert into pessoa(nome, cpf) values(?,?)";
+            PreparedStatement pre = con.prepareStatement(insert);
+            pre.setString(1,"Tom");
+            pre.setString(2,"12345");
+
+            pre.execute();
         }
         catch (SQLException e){
-            System.out.println(e);
+            e.printStackTrace();
+
         }
     }
 }
